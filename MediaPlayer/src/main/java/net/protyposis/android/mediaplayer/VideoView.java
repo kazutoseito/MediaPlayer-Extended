@@ -65,6 +65,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback,
     private MediaPlayer.OnCompletionListener mOnCompletionListener;
     private MediaPlayer.OnErrorListener mOnErrorListener;
     private MediaPlayer.OnInfoListener mOnInfoListener;
+    private MediaPlayer.OnCurrentPositionChangedListener mOnCurrentPositionChangedListener;
     private MediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener;
 
     public VideoView(Context context) {
@@ -171,6 +172,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback,
         mPlayer.setOnErrorListener(mErrorListener);
         mPlayer.setOnInfoListener(mInfoListener);
         mPlayer.setOnBufferingUpdateListener(mBufferingUpdateListener);
+        mPlayer.setOnCurrentPositionListener(mOnCurrentPositionChangedListener);
 
         // Create a handler for the error message in case an exceptions happens in the following thread
         final Handler exceptionHandler = new Handler(new Handler.Callback() {
@@ -342,6 +344,10 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback,
 
     public void setOnInfoListener(MediaPlayer.OnInfoListener l) {
         this.mOnInfoListener = l;
+    }
+
+    public void setOnCurrentPositionChangedListener(MediaPlayer.OnCurrentPositionChangedListener l) {
+        this.mOnCurrentPositionChangedListener = l;
     }
 
     @Override
