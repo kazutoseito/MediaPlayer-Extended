@@ -185,6 +185,7 @@ public class MediaPlayer {
     private OnInfoListener mOnInfoListener;
     private OnVideoSizeChangedListener mOnVideoSizeChangedListener;
     private OnBufferingUpdateListener mOnBufferingUpdateListener;
+    private OnCurrentPositionChangedListener mOnCurrentPositionChangedListener;
 
     private PowerManager.WakeLock mWakeLock = null;
     private boolean mScreenOnWhilePlaying;
@@ -1185,6 +1186,7 @@ public class MediaPlayer {
 
             // Update the current position of the player
             mCurrentPosition = mDecoders.getCurrentDecodingPTS();
+            mEventHandler.sendMessage(mEventHandler.obtainMessage(MEDIA_CHANGE_CURRENT_POSITION));
 
             if(mDecoders.getVideoDecoder() != null && mVideoFrameInfo != null) {
                 renderVideoFrame(mVideoFrameInfo);
@@ -1673,11 +1675,20 @@ public class MediaPlayer {
         mOnInfoListener = listener;
     }
 
+    public interface OnCurrentPositionChangedListener {
+        void OnCurrentPositionChanged(long curentPosition);
+    }
+
+    public void setOnCurrentPositionListener(OnCurrentPositionChangedListener listener) {
+        mOnCurrentPositionChangedListener = listener;
+    }
+
     private static final int MEDIA_PREPARED = 1;
     private static final int MEDIA_PLAYBACK_COMPLETE = 2;
     private static final int MEDIA_BUFFERING_UPDATE = 3;
     private static final int MEDIA_SEEK_COMPLETE = 4;
     private static final int MEDIA_SET_VIDEO_SIZE = 5;
+    private static final int MEDIA_CHANGE_CURRENT_POSITION = 6;
     private static final int MEDIA_ERROR = 100;
     private static final int MEDIA_INFO = 200;
 
@@ -1731,6 +1742,10 @@ public class MediaPlayer {
                     //Log.d(TAG, "onBufferingUpdate");
                     if (mOnBufferingUpdateListener != null)
                         mOnBufferingUpdateListener.onBufferingUpdate(MediaPlayer.this, msg.arg1);
+                    return;
+                case MEDIA_CHANGE_CURRENT_POSITION:
+                    if (mOnCurrentPositionChangedListener != null)
+                        mOnCurrentPositionChangedListener.OnCurrentPositionChanged(mCurrentPosition);
                     return;
 
                 default:
