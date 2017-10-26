@@ -816,6 +816,14 @@ public class MediaPlayer {
         return mVideoFormat != null ? mVideoFormat.getInteger(MediaFormat.KEY_HEIGHT) : 0;
     }
 
+    public int getFrameRate() {
+        if (mVideoFormat.containsKey(MediaFormat.KEY_FRAME_RATE)) {
+            return mVideoFormat.getInteger(MediaFormat.KEY_FRAME_RATE);
+        } else {
+            return 30;  //Default frame rate
+        }
+    }
+
     /**
      * @see android.media.MediaPlayer#setVolume(float, float)
      */

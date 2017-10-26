@@ -405,6 +405,10 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback,
         }
     }
 
+    public int getFrameRate() {
+        return mPlayer.getFrameRate();
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mSurfaceHolder = holder;
